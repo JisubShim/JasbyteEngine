@@ -4,14 +4,10 @@ namespace Jasbyte
 {
 	class Engine
 	{
-		/// <summary>
-		/// 엔진 설정
-		/// </summary>
+		// 엔진 설정
 		struct EngineSettings
 		{
-			/// <summary>
-			/// 목표 프레임 속도
-			/// </summary>
+			// 목표 프레임 속도
 			int targetFPS = 120;
 		};
 
@@ -19,66 +15,42 @@ namespace Jasbyte
 		Engine();
 		virtual ~Engine();
 
-		/// <summary>
-		/// 게임 루프를 실행한다.
-		/// </summary>
+		// 게임 루프를 실행한다.
 		void Run();
 
-		/// <summary>
-		/// 엔진을 종료한다.
-		/// </summary>
+		// 엔진을 종료한다.
 		void Quit();
 
-		/// <summary>
-		/// 싱글톤 인스턴스를 반환한다.
-		/// </summary>
+		// 싱글톤 인스턴스를 반환한다.
 		static Engine& Instance();
 
 	protected:
-		/// <summary>
-		/// 입력을 처리한다.
-		/// </summary>
-		void UpdateInput();
+		// 입력을 처리한다.
+		void ProcessInput();
 
-		/// <summary>
-		/// 게임 루프 시작 전에 한 번 초기화한다.
-		/// </summary>
+		// 게임 루프 시작 전에 한 번 초기화한다.
 		void Initialize();
 
-		/// <summary>
-		/// 매 프레임 상태를 갱신한다.
-		/// </summary>
-		void Update(float deltaTime);
+		// 매 프레임 상태를 갱신한다.
+		void Tick(float deltaTime);
 
-		/// <summary>
-		/// 화면을 그린다.
-		/// </summary>
+		// 화면을 그린다.
 		void Render();
 
-		/// <summary>
-		/// 이전 입력을 저장한다.
-		/// </summary>
+		// 이전 입력을 저장한다.
 		void SavePreviousInput();
 
-		/// <summary>
-		/// 엔진 종료 시 정리한다.
-		/// </summary>
+		// 엔진 종료 시 정리한다.
 		void Shutdown();
 
 	protected:
-		/// <summary>
-		/// 엔진 설정
-		/// </summary>
+		// 엔진 설정
 		EngineSettings m_settings;
 
-		/// <summary>
-		/// 엔진 종료 플래그
-		/// </summary>
+		// 엔진 종료 플래그
 		bool m_isQuitting = false;
 
-		/// <summary>
-		/// 싱글톤 전역 객체
-		/// </summary>
+		// 싱글톤 전역 객체
 		static Engine* s_instance;
 	};
 }

@@ -39,7 +39,7 @@ namespace Jasbyte
 		while (m_isQuitting == false)
 		{
 			// 입력 처리
-			UpdateInput();
+			ProcessInput();
 
 			// 현재 시간 확인 및 저장
 			QueryPerformanceCounter(&counter);
@@ -51,7 +51,7 @@ namespace Jasbyte
 			if (deltaTime >= targetFrameTime) // 프레임 제한
 			{
 				// 업데이트
-				Update(deltaTime);
+				Tick(deltaTime);
 
 				// 렌더링
 				Render();
@@ -73,7 +73,7 @@ namespace Jasbyte
 		m_isQuitting = true;
 	}
 
-	void Engine::UpdateInput()
+	void Engine::ProcessInput()
 	{
 	}
 
@@ -81,7 +81,7 @@ namespace Jasbyte
 	{
 	}
 
-	void Engine::Update(float deltaTime)
+	void Engine::Tick(float deltaTime)
 	{
 		std::cout << "delta time: " << deltaTime << ", FPS: " << 1.0f / deltaTime << '\n';
 	}
