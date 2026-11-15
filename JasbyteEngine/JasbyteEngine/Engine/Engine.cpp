@@ -1,4 +1,5 @@
 ﻿#include "Engine.h"
+#include "Level/Level.h"
 #include <iostream>
 #include <Windows.h>
 #include <stdint.h>
@@ -10,7 +11,12 @@ namespace Jasbyte
 
 	Engine::Engine()
 	{
-		assert(!s_instance);
+		if (s_instance != nullptr)
+		{
+			std::cerr << "Engine은 하나만 생성할 수 있습니다.\n";
+			std::abort();
+		}
+
 		s_instance = this;
 	}
 
@@ -21,8 +27,7 @@ namespace Jasbyte
 
 	void Engine::Run()
 	{
-		// 초기화
-		Initialize();
+		
 
 		LARGE_INTEGER frequency;
 		LARGE_INTEGER counter;
@@ -50,11 +55,38 @@ namespace Jasbyte
 
 			if (deltaTime >= targetFrameTime) // 프레임 제한
 			{
+				// 레벨 초기화
+				OnInitialized();
+
+				// 레벨의 액터 초기화
+				BeginPlay();
+
 				// 업데이트
 				Tick(deltaTime);
 
 				// 렌더링
 				Render();
+
+				// 레벨 전환
+				if (m_nextLevel != nullptr)
+				{
+					
+					if (m_currentLevel != nullptr)
+					{
+						// 기존 레벨 정리
+						m_currentLevel.reset();
+					}
+
+					// 전환 요청된 레벨을 메인 레벨로 설정
+					m_currentLevel = std::move(m_nextLevel);
+					m_nextLevel.reset();
+				}
+
+				// 레벨 정리
+				if (m_currentLevel != nullptr)
+				{
+					m_currentLevel->ProcessAddAndDestroyActors();
+				}
 
 				// 처리된 입력을 이전 프레임 입력으로 저장
 				SavePreviousInput();
@@ -73,21 +105,53 @@ namespace Jasbyte
 		m_isQuitting = true;
 	}
 
+	Engine& Engine::Instance()
+	{
+		assert(s_instance != nullptr);
+		return *s_instance;
+	}
+
 	void Engine::ProcessInput()
 	{
 	}
 
-	void Engine::Initialize()
+	void Engine::OnInitialized()
 	{
+		if (m_currentLevel == nullptr)
+		{
+			return;
+		}
+
+		m_currentLevel->OnInitialized();
+	}
+
+	void Engine::BeginPlay()
+	{
+		if (m_currentLevel == nullptr)
+		{
+			return;
+		}
+
+		m_currentLevel->BeginPlay();
 	}
 
 	void Engine::Tick(float deltaTime)
 	{
-		std::cout << "delta time: " << deltaTime << ", FPS: " << 1.0f / deltaTime << '\n';
+		if (m_currentLevel == nullptr)
+		{
+			return;
+		}
+
+		m_currentLevel->Tick(deltaTime);
 	}
 
 	void Engine::Render()
 	{
+		if (m_currentLevel == nullptr)
+		{
+			return;
+		}
+		m_currentLevel->Render();
 	}
 
 	void Engine::SavePreviousInput()
