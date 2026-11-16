@@ -30,7 +30,6 @@ namespace Jasbyte
 	{
 		// 액터 삭제 예약
 		m_isPendingDestroy = true;
-		
 	}
 
 	std::shared_ptr<Level> Actor::GetOwner()

@@ -27,8 +27,6 @@ namespace Jasbyte
 
 	void Engine::Run()
 	{
-		
-
 		LARGE_INTEGER frequency;
 		LARGE_INTEGER counter;
 
@@ -55,9 +53,6 @@ namespace Jasbyte
 
 			if (deltaTime >= targetFrameTime) // 프레임 제한
 			{
-				// 레벨 초기화
-				OnInitialized();
-
 				// 레벨의 액터 초기화
 				BeginPlay();
 
@@ -70,16 +65,11 @@ namespace Jasbyte
 				// 레벨 전환
 				if (m_nextLevel != nullptr)
 				{
-					
-					if (m_currentLevel != nullptr)
-					{
-						// 기존 레벨 정리
-						m_currentLevel.reset();
-					}
-
-					// 전환 요청된 레벨을 메인 레벨로 설정
+					// 전환 요청된 레벨을 현재 레벨로 설정
 					m_currentLevel = std::move(m_nextLevel);
-					m_nextLevel.reset();
+
+					// 레벨 초기화
+					OnInitialized();
 				}
 
 				// 레벨 정리

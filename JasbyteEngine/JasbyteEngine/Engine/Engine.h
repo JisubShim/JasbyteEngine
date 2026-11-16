@@ -70,10 +70,10 @@ namespace Jasbyte
 		// 싱글톤 전역 객체
 		static Engine* s_instance;
 
-		// 메인 레벨
+		// 현재 레벨
 		std::shared_ptr<Level> m_currentLevel;
 
-		// 추가 요청된 레벨
+		// 전환 요청된 레벨
 		std::shared_ptr<Level> m_nextLevel;
 	};
 }

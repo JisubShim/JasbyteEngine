@@ -60,13 +60,14 @@ namespace Jasbyte
 	void Level::ProcessAddAndDestroyActors()
 	{
 		// 액터 제거
-		for (auto iterator = m_actors.begin(); iterator != m_actors.end(); ++iterator)
+		for (auto iterator = m_actors.begin(); iterator != m_actors.end();)
 		{
 			if ((*iterator)->IsPendingDestroy())
 			{
 				iterator = m_actors.erase(iterator);
 				continue;
 			}
+			++iterator;
 		}
 
 		// 액터 추가
